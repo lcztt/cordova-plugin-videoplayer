@@ -1,0 +1,19 @@
+{
+  "name": "com.vitas.videoplayer",
+  "version": "1.0.0",
+  "description": "",
+  "cordova": {
+    "id": "com.vitas.videoplayer",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android"
+  ],
+  "author": "",
+  "license": "ISC"
+}

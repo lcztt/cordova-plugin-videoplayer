@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="com.vitas.videoplayer" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>videoplayer</name>
+    <js-module name="videoplayer" src="www/videoplayer.js">
+        <clobbers target="cordova.plugins.videoplayer" />
+    </js-module>
+    <platform name="ios">
+        <config-file parent="/*" target="config.xml">
+            <feature name="videoplayer">
+                <param name="ios-package" value="videoplayer" />
+            </feature>
+        </config-file>
+
+
+        <header-file src="src/ios/VideoPlayer/YSPBCopyWriter.h"/>
+        <header-file src="src/ios/VideoPlayer/YSPBUtilities.h"/>
+        <header-file src="src/ios/VideoPlayer/YSPBVideoPlayerView.h"/>
+        <header-file src="src/ios/VideoPlayer/YSPBVideoPlayerViewData.h"/>
+        <header-file src="src/ios/VideoPlayer/YSPhotoBrowserProgressView.h"/>
+        <header-file src="src/ios/VideoPlayer/YSPhotoBrowserTipView.h"/>
+        <header-file src="src/ios/VideoPlayer/YSPBVideoPlayManager.h"/>
+
+
+        <source-file src="src/ios/VideoPlayer/YSPBCopyWriter.m" />
+        <source-file src="src/ios/VideoPlayer/YSPBUtilities.m"/>
+        <source-file src="src/ios/VideoPlayer/YSPBVideoPlayerView.m"/>
+        <source-file src="src/ios/VideoPlayer/YSPBVideoPlayerViewData.m"/>
+        <source-file src="src/ios/VideoPlayer/YSPhotoBrowserProgressView.m"/>
+        <source-file src="src/ios/VideoPlayer/YSPhotoBrowserTipView.m"/>
+        <source-file src="src/ios/VideoPlayer/YSPBVideoPlayManager.m"/>
+
+
+        <resource-file src="src/ios/VideoPlayer/Resource/ybib_bigPlay@2x.png"/>
+        <resource-file src="src/ios/VideoPlayer/Resource/ybib_bigPlay@3x.png"/>
+        <resource-file src="src/ios/VideoPlayer/Resource/ybib_cancel@2x.png"/>
+        <resource-file src="src/ios/VideoPlayer/Resource/ybib_cancel@3x.png"/>
+        <resource-file src="src/ios/VideoPlayer/Resource/ybib_circlePoint@2x.png"/>
+        <resource-file src="src/ios/VideoPlayer/Resource/ybib_circlePoint@3x.png"/>
+        <resource-file src="src/ios/VideoPlayer/Resource/ybib_more@2x.png"/>
+        <resource-file src="src/ios/VideoPlayer/Resource/ybib_more@3x.png"/>
+        <resource-file src="src/ios/VideoPlayer/Resource/ybib_pause@2x.png"/>
+        <resource-file src="src/ios/VideoPlayer/Resource/ybib_pause@3x.png"/>
+        <resource-file src="src/ios/VideoPlayer/Resource/ybib_play@2x.png"/>
+        <resource-file src="src/ios/VideoPlayer/Resource/ybib_play@3x.png"/>
+        <resource-file src="src/ios/VideoPlayer/Resource/ybib_pround@2x.png"/>
+        <resource-file src="src/ios/VideoPlayer/Resource/ybib_pround@3x.png"/>
+        <resource-file src="src/ios/VideoPlayer/Resource/ybib_save@2x.png"/>
+        <resource-file src="src/ios/VideoPlayer/Resource/ybib_save@3x.png"/>
+
+
+
+        <pods-config ios-min-version="9.0" use-frameworks="true">
+            <!-- <source url="git@github.com:foo/foo-specs.git"/> -->
+        </pods-config>
+        <pod name="SDWebImage" version="5.0" />
+        <pod name="YYImage" version="1.0.4" />
+    </platform>
+
+    
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="videoplayer">
+                <param name="android-package" value="com.vitas.videoplayer.videoplayer" />
+            </feature>
+        </config-file>
+        <config-file parent="/*" target="AndroidManifest.xml"></config-file>
+        <source-file src="src/android/videoplayer.java" target-dir="src/com/vitas/videoplayer/videoplayer" />
+    </platform>
+</plugin>
