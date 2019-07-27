@@ -57,26 +57,29 @@
     
     CGRect frame = [[UIScreen mainScreen] bounds];
     frame.origin.y = frame.size.height;
-    YSPBVideoPlayerView *videoPlayer = [[YSPBVideoPlayerView alloc] initWithFrame:frame];
-    self.videoPlayer = videoPlayer;
+    if (self.videoPlayer) {
+        [self.videoPlayer removeFromSuperview];
+        self.videoPlayer = nil;
+    }
+    self.videoPlayer = [[YSPBVideoPlayerView alloc] initWithFrame:frame];
     
-    [vc.view insertSubview:videoPlayer belowSubview:vc.webView];
+    [vc.view insertSubview:self.videoPlayer belowSubview:vc.webView];
     
     self.webViewBackColor = vc.webView.backgroundColor;
     vc.webView.backgroundColor = [UIColor clearColor];
     vc.webView.opaque = false;
     
     [UIView animateWithDuration:0.25 animations:^{
-        CGRect frame = videoPlayer.frame;
+        CGRect frame = self.videoPlayer.frame;
         frame.origin.y = 0;
-        videoPlayer.frame = frame;
+        self.videoPlayer.frame = frame;
     } completion:^(BOOL finished) {
         
         YSPBVideoPlayerViewData *data = [[YSPBVideoPlayerViewData alloc] init];
         NSString *videoPath = params[@"videoPath"];
         data.url = [NSURL URLWithString:videoPath];
-        [videoPlayer initializeVideoPlayerWithData:data];
-        [videoPlayer startPlay];
+        [self.videoPlayer initializeVideoPlayerWithData:data];
+        [self.videoPlayer startPlay];
     }];
     
     NSDictionary *paramss = @{@"status":@(0)};

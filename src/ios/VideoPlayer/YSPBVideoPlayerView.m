@@ -45,6 +45,7 @@ NSString * const YSPhotoBrowserVideoDownloadCompletionNotification = @"YSPhotoBr
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        self.backgroundColor = [UIColor blackColor];
         
         self->_isPlaying = NO;
         self->_isActive = YES;
