@@ -29,7 +29,7 @@
         <source-file src="src/ios/VideoPlayer/YSPhotoBrowserProgressView.m"/>
         <source-file src="src/ios/VideoPlayer/YSPhotoBrowserTipView.m"/>
         <source-file src="src/ios/VideoPlayer/YSPBVideoPlayManager.m"/>
-        <source-file src="src/ios/videoplayer.m">
+        <source-file src="src/ios/videoplayer.m"/>
 
 
         <resource-file src="src/ios/VideoPlayer/Resource/ybib_bigPlay@2x.png"/>
@@ -48,14 +48,6 @@
         <resource-file src="src/ios/VideoPlayer/Resource/ybib_pround@3x.png"/>
         <resource-file src="src/ios/VideoPlayer/Resource/ybib_save@2x.png"/>
         <resource-file src="src/ios/VideoPlayer/Resource/ybib_save@3x.png"/>
-
-
-
-        <pods-config ios-min-version="9.0" use-frameworks="true">
-            <!-- <source url="git@github.com:foo/foo-specs.git"/> -->
-        </pods-config>
-        <pod name="SDWebImage" version="5.0" />
-        <pod name="YYImage" version="1.0.4" />
     </platform>
 
     
