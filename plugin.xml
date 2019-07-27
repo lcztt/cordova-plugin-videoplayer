@@ -29,6 +29,7 @@
         <source-file src="src/ios/VideoPlayer/YSPhotoBrowserProgressView.m"/>
         <source-file src="src/ios/VideoPlayer/YSPhotoBrowserTipView.m"/>
         <source-file src="src/ios/VideoPlayer/YSPBVideoPlayManager.m"/>
+        <source-file src="src/ios/videoplayer.m">
 
 
         <resource-file src="src/ios/VideoPlayer/Resource/ybib_bigPlay@2x.png"/>
