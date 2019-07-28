@@ -33,6 +33,8 @@
 
 - (void)playVideo:(CDVInvokedUrlCommand*)command
 {
+    self.command = command;
+
     if (command.arguments.count != 1) {
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -143,28 +145,28 @@
 - (void)notificationHandler:(NSNotification *)notification
 {
     if ([notification.name isEqualToString:YSPhotoBrowserVideoDownloadCompletionNotification]) {
-        NSLog(@"download completion");
+        NSLog(@"load first frame completion 1");
         
         NSDictionary *params = @{@"status":@(1)};
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self jsonStringEncodedWith:params]];
         pluginResult.keepCallback = @(1);
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
     } else if ([notification.name isEqualToString:YSPhotoBrowserVideoStartPlayNotification]) {
-        NSLog(@"start play");
+        NSLog(@"start play 2");
         
         NSDictionary *params = @{@"status":@(2)};
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self jsonStringEncodedWith:params]];
         pluginResult.keepCallback = @(1);
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
     } else if ([notification.name isEqualToString:AVPlayerItemDidPlayToEndTimeNotification]) {
-        NSLog(@"play to end");
+        NSLog(@"play to end 3");
         
         NSDictionary *params = @{@"status":@(3)};
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self jsonStringEncodedWith:params]];
         pluginResult.keepCallback = @(1);
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
     } else if ([notification.name isEqualToString:UIApplicationWillResignActiveNotification]) {
-        NSLog(@"pause to play");
+        NSLog(@"pause to play 4");
         
         NSDictionary *params = @{@"status":@(4)};
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self jsonStringEncodedWith:params]];
