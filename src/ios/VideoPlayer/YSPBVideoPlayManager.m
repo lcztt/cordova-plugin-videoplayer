@@ -55,8 +55,6 @@
         return;
     }
     
-    CGRect frame = [[UIScreen mainScreen] bounds];
-    frame.origin.y = frame.size.height;
     if (self.videoPlayer) {
         NSString *videoPath = params[@"videoPath"];
         if ([self.videoPlayer.playData.url.absoluteString isEqualToString:videoPath]) {
@@ -67,6 +65,8 @@
         [self.videoPlayer removeFromSuperview];
         self.videoPlayer = nil;
     }
+    CGRect frame = [[UIScreen mainScreen] bounds];
+//    frame.origin.y = frame.size.height;
     self.videoPlayer = [[YSPBVideoPlayerView alloc] initWithFrame:frame];
     [vc.view insertSubview:self.videoPlayer belowSubview:vc.webView];
     
@@ -74,10 +74,12 @@
     vc.webView.backgroundColor = [UIColor clearColor];
     vc.webView.opaque = false;
     
+    self.videoPlayer.alpha = 0;
     [UIView animateWithDuration:0.25 animations:^{
-        CGRect frame = self.videoPlayer.frame;
-        frame.origin.y = 0;
-        self.videoPlayer.frame = frame;
+        self.videoPlayer.alpha = 1;
+//        CGRect frame = self.videoPlayer.frame;
+//        frame.origin.y = 0;
+//        self.videoPlayer.frame = frame;
     } completion:^(BOOL finished) {
         
         [self addNotification];
@@ -99,9 +101,10 @@
 {
     if (self.videoPlayer) {
         [UIView animateWithDuration:0.25 animations:^{
-            CGRect frame = self.videoPlayer.frame;
-            frame.origin.y = 0;
-            self.videoPlayer.frame = frame;
+            self.videoPlayer.alpha = 0;
+//            CGRect frame = self.videoPlayer.frame;
+//            frame.origin.y = 0;
+//            self.videoPlayer.frame = frame;
         } completion:^(BOOL finished) {
             [self.videoPlayer removeFromSuperview];
             self.videoPlayer = nil;
