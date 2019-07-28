@@ -105,9 +105,9 @@ NSString * const YSPhotoBrowserVideoDownloadCompletionNotification = @"YSPhotoBr
 
 - (void)play
 {
-    if (!self.cellData.avAsset || self->_isPlaying) return;
-    [self->_player play];
+    [self startPlay];
 }
+
 
 - (void)cancelPlay {
     [self restorePlay];
