@@ -58,11 +58,16 @@
     CGRect frame = [[UIScreen mainScreen] bounds];
     frame.origin.y = frame.size.height;
     if (self.videoPlayer) {
+        NSString *videoPath = params[@"videoPath"];
+        if ([self.videoPlayer.playData.url.absoluteString isEqualToString:videoPath]) {
+            [self.videoPlayer startPlay];
+            return;
+        }
+        
         [self.videoPlayer removeFromSuperview];
         self.videoPlayer = nil;
     }
     self.videoPlayer = [[YSPBVideoPlayerView alloc] initWithFrame:frame];
-    
     [vc.view insertSubview:self.videoPlayer belowSubview:vc.webView];
     
     self.webViewBackColor = vc.webView.backgroundColor;
@@ -75,6 +80,8 @@
         self.videoPlayer.frame = frame;
     } completion:^(BOOL finished) {
         
+        [self addNotification];
+        
         YSPBVideoPlayerViewData *data = [[YSPBVideoPlayerViewData alloc] init];
         NSString *videoPath = params[@"videoPath"];
         data.url = [NSURL URLWithString:videoPath];
@@ -84,6 +91,7 @@
     
     NSDictionary *paramss = @{@"status":@(0)};
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self jsonStringEncodedWith:paramss]];
+    pluginResult.keepCallback = @(1);
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
@@ -101,8 +109,19 @@
             MainViewController *vc = (MainViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
             vc.webView.backgroundColor = self.webViewBackColor;
             vc.webView.opaque = true;
+            [self removeNotification];
         }];
     }
+}
+
+- (void)pauseVideo:(CDVInvokedUrlCommand *)command
+{
+    [self.videoPlayer pause];
+}
+
+- (void)replay:(CDVInvokedUrlCommand *)command
+{
+    [self.videoPlayer play];
 }
 
 - (void)addNotification
@@ -110,27 +129,43 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationHandler:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationHandler:) name:YSPhotoBrowserVideoStartPlayNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationHandler:) name:YSPhotoBrowserVideoDownloadCompletionNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationHandler:) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)removeNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)notificationHandler:(NSNotification *)notification
 {
-    if ([notification.name isEqualToString:YSPhotoBrowserVideoStartPlayNotification]) {
-        NSLog(@"start play");
+    if ([notification.name isEqualToString:YSPhotoBrowserVideoDownloadCompletionNotification]) {
+        NSLog(@"download completion");
         
         NSDictionary *params = @{@"status":@(1)};
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self jsonStringEncodedWith:params]];
+        pluginResult.keepCallback = @(1);
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
+    } else if ([notification.name isEqualToString:YSPhotoBrowserVideoStartPlayNotification]) {
+        NSLog(@"start play");
+        
+        NSDictionary *params = @{@"status":@(2)};
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self jsonStringEncodedWith:params]];
+        pluginResult.keepCallback = @(1);
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
     } else if ([notification.name isEqualToString:AVPlayerItemDidPlayToEndTimeNotification]) {
         NSLog(@"play to end");
         
-        NSDictionary *params = @{@"status":@(2)};
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self jsonStringEncodedWith:params]];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
-    } else if ([notification.name isEqualToString:YSPhotoBrowserVideoDownloadCompletionNotification]) {
-        NSLog(@"download completion");
-        
         NSDictionary *params = @{@"status":@(3)};
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self jsonStringEncodedWith:params]];
+        pluginResult.keepCallback = @(1);
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
+    } else if ([notification.name isEqualToString:UIApplicationWillResignActiveNotification]) {
+        NSLog(@"pause to play");
+        
+        NSDictionary *params = @{@"status":@(4)};
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self jsonStringEncodedWith:params]];
+        pluginResult.keepCallback = @(1);
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
     }
 }

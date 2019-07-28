@@ -16,8 +16,13 @@ FOUNDATION_EXPORT NSString * const YSPhotoBrowserVideoDownloadCompletionNotifica
 
 @interface YSPBVideoPlayerView : UIView
 
-- (void)startPlay;
 - (void)initializeVideoPlayerWithData:(YSPBVideoPlayerViewData *)data;
+
+- (void)startPlay;
+- (void)pause;
+- (void)play;
+
+@property (nonatomic, strong, readonly) YSPBVideoPlayerViewData *playData;
 
 @end
 

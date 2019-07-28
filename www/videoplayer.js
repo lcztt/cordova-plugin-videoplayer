@@ -7,3 +7,11 @@ exports.playVideo = function (params, success, error) {
 exports.closeVideo = function (params, success, error) {
     exec(success, error, 'videoplayer', 'closeVideo', [params]);
 };
+
+exports.pauseVideo = function (params, success, error) {
+    exec(success, error, 'videoplayer', 'pauseVideo', [params]);
+};
+
+exports.replay = function (params, success, error) {
+    exec(success, error, 'videoplayer', 'replay', [params]);
+};

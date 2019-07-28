@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)playVideo:(CDVInvokedUrlCommand *)command;
 - (void)closeVideo:(CDVInvokedUrlCommand *)command;
+- (void)pauseVideo:(CDVInvokedUrlCommand *)command;
+- (void)replay:(CDVInvokedUrlCommand *)command;
 
 @end
 

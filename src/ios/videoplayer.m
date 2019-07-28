@@ -20,4 +20,14 @@
     [[YSPBVideoPlayManager shareInstance] closeVideo:command];
 }
 
+- (void)pauseVideo:(CDVInvokedUrlCommand *)command
+{
+    [[YSPBVideoPlayManager shareInstance] pauseVideo:command];
+}
+
+- (void)replay:(CDVInvokedUrlCommand *)command
+{
+    [[YSPBVideoPlayManager shareInstance] replay:command];
+}
+
 @end

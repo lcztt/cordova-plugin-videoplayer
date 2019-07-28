@@ -96,6 +96,19 @@ NSString * const YSPhotoBrowserVideoDownloadCompletionNotification = @"YSPhotoBr
     [self.baseView showProgressViewLoading];
 }
 
+- (void)pause
+{
+    if (self->_player && self->_isPlaying) {
+        [self->_player pause];
+    }
+}
+
+- (void)play
+{
+    if (!self.cellData.avAsset || self->_isPlaying) return;
+    [self->_player play];
+}
+
 - (void)cancelPlay {
     [self restorePlay];
     [self restoreAsset];
@@ -283,9 +296,7 @@ NSString * const YSPhotoBrowserVideoDownloadCompletionNotification = @"YSPhotoBr
 
 - (void)applicationWillResignActive:(NSNotification *)notification {
     self->_isActive = NO;
-    if (self->_player && self->_isPlaying) {
-        [self->_player pause];
-    }
+    [self pause];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification {
@@ -299,9 +310,7 @@ NSString * const YSPhotoBrowserVideoDownloadCompletionNotification = @"YSPhotoBr
         case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
             break;
         case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
-            if (self->_player && self->_isPlaying) {
-                [self->_player pause];
-            }
+            [self pause];
             break;
         case AVAudioSessionRouteChangeReasonCategoryChange:
             break;
@@ -325,6 +334,11 @@ NSString * const YSPhotoBrowserVideoDownloadCompletionNotification = @"YSPhotoBr
         _firstFrameImageView.layer.masksToBounds = YES;
     }
     return _firstFrameImageView;
+}
+
+- (YSPBVideoPlayerViewData *)playData
+{
+    return self.cellData;
 }
 
 @end
