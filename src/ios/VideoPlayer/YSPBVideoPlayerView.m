@@ -100,6 +100,7 @@ NSString * const YSPhotoBrowserVideoDownloadCompletionNotification = @"YSPhotoBr
 {
     if (self->_player && self->_isPlaying) {
         [self->_player pause];
+        self->_isPlaying = NO;
     }
 }
 
