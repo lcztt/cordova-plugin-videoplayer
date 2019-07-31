@@ -1,17 +1,34 @@
 var exec = require('cordova/exec');
 
-exports.playVideo = function (params, success, error) {
+function videoplayer() {
+
+}
+
+videoplayer.prototype.playVideo = function (params, success, error) {
     exec(success, error, 'videoplayer', 'playVideo', [params]);
 };
 
-exports.closeVideo = function (params, success, error) {
+videoplayer.prototype.closeVideo = function (params, success, error) {
     exec(success, error, 'videoplayer', 'closeVideo', [params]);
 };
 
-exports.pauseVideo = function (params, success, error) {
+videoplayer.prototype.pauseVideo = function (params, success, error) {
     exec(success, error, 'videoplayer', 'pauseVideo', [params]);
 };
 
-exports.replay = function (params, success, error) {
+videoplayer.prototype.replay = function (params, success, error) {
     exec(success, error, 'videoplayer', 'replay', [params]);
 };
+
+videoplayer.prototype.onVideoPlayEvent = function (eventID, params) {
+    cordova.fireDocumentEvent('videoplayer.onVideoPlayEvent', {
+        eventID: eventID,
+        params: params
+    })
+};
+
+if (!window.videoplayer) {
+    window.videoplayer = new videoplayer();
+}
+
+module.exports = new videoplayer();

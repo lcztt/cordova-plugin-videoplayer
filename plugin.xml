@@ -57,7 +57,10 @@
                 <param name="android-package" value="com.vitas.videoplayer.videoplayer" />
             </feature>
         </config-file>
-        <config-file parent="/*" target="AndroidManifest.xml"></config-file>
-        <source-file src="src/android/videoplayer.java" target-dir="src/com/vitas/videoplayer/videoplayer" />
+        <source-file src="src/android/videoplayer.java" target-dir="src/com/vitas/videoplayer" />
+        <source-file src="src/android/MyVideoView.java" target-dir="src/com/vitas/videoplayer" />
+
+        <resource-file src="src/android/layout/view_video_play.xml" target="res/layout/view_video_play.xml"/>
+
     </platform>
 </plugin>
