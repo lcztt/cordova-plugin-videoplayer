@@ -130,6 +130,25 @@
     [self.videoPlayer play];
 }
 
+- (void)mute:(CDVInvokedUrlCommand *)command
+{
+    if (command.arguments.count > 0) {
+        NSDictionary *params = command.arguments[0];
+        if ([params isKindOfClass:[NSDictionary class]]) {
+            [self.videoPlayer mute:[params[@"mute"] boolValue]];
+            
+            NSDictionary *params = @{};
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:params];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+            return;
+        }
+    }
+    
+    NSDictionary *params = @{@"code":@(1), @"desc":@"参数不完整"};
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:params];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (void)addNotification
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notificationHandler:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];

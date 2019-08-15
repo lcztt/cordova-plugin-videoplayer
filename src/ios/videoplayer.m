@@ -17,17 +17,26 @@
 
 - (void)closeVideo:(CDVInvokedUrlCommand *)command
 {
+    [YSPBVideoPlayManager shareInstance].commandDelegate = self.commandDelegate;
     [[YSPBVideoPlayManager shareInstance] closeVideo:command];
 }
 
 - (void)pauseVideo:(CDVInvokedUrlCommand *)command
 {
+    [YSPBVideoPlayManager shareInstance].commandDelegate = self.commandDelegate;
     [[YSPBVideoPlayManager shareInstance] pauseVideo:command];
 }
 
 - (void)replay:(CDVInvokedUrlCommand *)command
 {
+    [YSPBVideoPlayManager shareInstance].commandDelegate = self.commandDelegate;
     [[YSPBVideoPlayManager shareInstance] replay:command];
+}
+
+- (void)mute:(CDVInvokedUrlCommand *)command;
+{
+    [YSPBVideoPlayManager shareInstance].commandDelegate = self.commandDelegate;
+    [[YSPBVideoPlayManager shareInstance] mute:command];
 }
 
 @end

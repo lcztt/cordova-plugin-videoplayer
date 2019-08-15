@@ -109,6 +109,10 @@ NSString * const YSPhotoBrowserVideoDownloadCompletionNotification = @"YSPhotoBr
     [self startPlay];
 }
 
+- (void)mute:(BOOL)mute
+{
+    [self->_player setMuted:mute];
+}
 
 - (void)cancelPlay {
     [self restorePlay];

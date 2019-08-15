@@ -1,3 +1,4 @@
+
 var exec = require('cordova/exec');
 
 function videoplayer() {
@@ -18,6 +19,10 @@ videoplayer.prototype.pauseVideo = function (params, success, error) {
 
 videoplayer.prototype.replay = function (params, success, error) {
     exec(success, error, 'videoplayer', 'replay', [params]);
+};
+
+videoplayer.prototype.mute = function (params, success, error) {
+    exec(success, error, 'videoplayer', 'mute', [params]);
 };
 
 videoplayer.prototype.onVideoPlayEvent = function (eventID, params) {
