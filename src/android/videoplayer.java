@@ -4,11 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +28,13 @@ import org.json.JSONObject;
 
 import bobo.chatapp.R;
 
+import static android.content.Context.AUDIO_SERVICE;
+
 /**
  * This class echoes a string called from JavaScript.
  */
 public class videoplayer extends CordovaPlugin implements MediaPlayer.OnCompletionListener,
-        MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener{
+        MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener {
 
     private static final String TAG = "videoplayer";
 
@@ -45,6 +49,7 @@ public class videoplayer extends CordovaPlugin implements MediaPlayer.OnCompleti
 
     private RelativeLayout rl_base;
     private MyVideoView view_video;
+    private MediaPlayer mMediaPlayer;
 
     private String mVideoUrl;
 
@@ -58,17 +63,18 @@ public class videoplayer extends CordovaPlugin implements MediaPlayer.OnCompleti
         this.mContext = this.activity.getApplicationContext();
         this.rootView = (ViewGroup) activity.findViewById(android.R.id.content);
         this.webView = (WebView) rootView.getChildAt(0);
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                rootView.setBackgroundColor(Color.BLACK);
-            }
-        });
+        //activity.runOnUiThread(new Runnable() {
+        //    @Override
+        //    public void run() {
+        //        rootView.setBackgroundColor(Color.BLACK);
+        //    }
+        //});
     }
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         this.mCallbackContext = callbackContext;
+        Log.e(TAG, "execute: ------- " + action);
         switch (action) {
             case "playVideo":
                 JSONObject jsonObject = new JSONObject(args.getString(0));
@@ -85,6 +91,10 @@ public class videoplayer extends CordovaPlugin implements MediaPlayer.OnCompleti
             case "replay":
                 replay();
                 return true;
+            case "mute":
+                JSONObject muteJsonObject = new JSONObject(args.getString(0));
+                boolean openAudio = muteJsonObject.optInt("mute") == 0;
+                return setMute(openAudio);
         }
         return true;
     }
@@ -104,17 +114,37 @@ public class videoplayer extends CordovaPlugin implements MediaPlayer.OnCompleti
         view_video.stopPlayback();
     }
 
+    private boolean setMute(boolean openAudio) {
+        if (mMediaPlayer != null) {
+            float volume;
+            if (openAudio) {
+                AudioManager am = (AudioManager) mContext.getSystemService(AUDIO_SERVICE);
+                int volumeLevel = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+                int maxVolume = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+                volume = (float) volumeLevel / maxVolume;
+            } else {
+                volume = 0f;
+            }
+            mMediaPlayer.setVolume(volume, volume);
+            mCallbackContext.success();
+            return true;
+        }
+        mCallbackContext.error("mMediaPlayer is null");
+        return true;
+    }
+
     private void closeVideo() {
         activity.runOnUiThread(new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void run() {
-                StatusUtil.restoreStatusBar(activity, rootView);
+                //StatusUtil.restoreStatusBar(activity, rootView);
 
                 stop();
                 if (rl_base == null) return;
                 rootView.removeView(rl_base);
                 rl_base = null;
+                mMediaPlayer = null;
                 webView.setBackgroundResource(0);
                 webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
             }
@@ -125,14 +155,27 @@ public class videoplayer extends CordovaPlugin implements MediaPlayer.OnCompleti
     @Override
     public void onPrepared(MediaPlayer mp) {
         Log.d(TAG, "Stream is prepared");
+        mMediaPlayer = mp;
         mp.setOnInfoListener(new MediaPlayer.OnInfoListener() {
             @Override
             public boolean onInfo(MediaPlayer mp, int what, int extra) {
+                Log.e(TAG, "onInfo: -----------------------" + what);
                 if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START)
                     backEvent(1, new JSONObject());
                 return true;
             }
         });
+        mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
+            @Override
+            public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+                int w = mp.getVideoWidth();
+                int h = mp.getVideoHeight();
+                Log.e(TAG, "onVideoSizeChanged: 视频宽高 " + w + "   " + h);
+                view_video.setMeasure(w, h);
+                view_video.requestLayout();
+            }
+        });
+
         view_video.requestFocus();
         view_video.start();
     }
@@ -173,7 +216,7 @@ public class videoplayer extends CordovaPlugin implements MediaPlayer.OnCompleti
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                StatusUtil.setTransparent(activity, rootView);
+                //StatusUtil.setTransparent(activity, rootView);
                 LayoutInflater layoutInflater = LayoutInflater.from(activity);
                 rl_base = (RelativeLayout) layoutInflater.inflate(_R("layout", "view_video_play"), null);
                 view_video = rl_base.findViewById(R.id.view_video);
@@ -188,7 +231,6 @@ public class videoplayer extends CordovaPlugin implements MediaPlayer.OnCompleti
                 view_video.setOnCompletionListener(videoplayer.this);
                 view_video.setOnPreparedListener(videoplayer.this);
                 view_video.setOnErrorListener(videoplayer.this);
-                view_video.setOnPreparedListener(videoplayer.this);
                 view_video.setVideoURI(videoUri);
             }
         });
@@ -219,4 +261,10 @@ public class videoplayer extends CordovaPlugin implements MediaPlayer.OnCompleti
             }
         });
     }
+
+    public int dp2px(Context context, float dpVal) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                dpVal, context.getResources().getDisplayMetrics());
+    }
+
 }
