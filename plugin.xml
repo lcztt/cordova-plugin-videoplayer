@@ -12,42 +12,28 @@
             </feature>
         </config-file>
 
-
-        <header-file src="src/ios/VideoPlayer/YSPBCopyWriter.h"/>
-        <header-file src="src/ios/VideoPlayer/YSPBUtilities.h"/>
-        <header-file src="src/ios/VideoPlayer/YSPBVideoPlayerView.h"/>
-        <header-file src="src/ios/VideoPlayer/YSPBVideoPlayerViewData.h"/>
-        <header-file src="src/ios/VideoPlayer/YSPhotoBrowserProgressView.h"/>
-        <header-file src="src/ios/VideoPlayer/YSPhotoBrowserTipView.h"/>
         <header-file src="src/ios/VideoPlayer/YSPBVideoPlayManager.h"/>
+        <source-file src="src/ios/VideoPlayer/YSPBVideoPlayManager.m" />
+        <header-file src="src/ios/VideoPlayer/UIView+ZFFrame.h"/>
+        <source-file src="src/ios/VideoPlayer/UIView+ZFFrame.m" />
+        <header-file src="src/ios/VideoPlayer/UIImageView+ZFCache.h"/>
+        <source-file src="src/ios/VideoPlayer/UIImageView+ZFCache.m" />
+        <header-file src="src/ios/VideoPlayer/LCAVPlayerPresentView.h"/>
+        <source-file src="src/ios/VideoPlayer/LCAVPlayerPresentView.m" />
+        <header-file src="src/ios/VideoPlayer/LCAVPlayerModel.h"/>
+        <source-file src="src/ios/VideoPlayer/LCAVPlayerModel.m" />
+        <header-file src="src/ios/VideoPlayer/LCAVPlayerManager.h"/>
+        <source-file src="src/ios/VideoPlayer/LCAVPlayerManager.m" />
+        <header-file src="src/ios/VideoPlayer/LCAVPlayer.h"/>
+        <source-file src="src/ios/VideoPlayer/LCAVPlayer.m" />
+        <header-file src="src/ios/VideoPlayer/LCAVPlayerDelegate.h"/>
+        <header-file src="src/ios/VideoPlayer/LCAVNetworkReachability.h"/>
+        <source-file src="src/ios/VideoPlayer/LCAVNetworkReachability.m" />
+        <header-file src="src/ios/VideoPlayer/LCAVKVOController.h"/>
+        <source-file src="src/ios/VideoPlayer/LCAVKVOController.m" />
+        <source-file src="src/ios/VideoPlayer.m" />
 
-
-        <source-file src="src/ios/VideoPlayer/YSPBCopyWriter.m" />
-        <source-file src="src/ios/VideoPlayer/YSPBUtilities.m"/>
-        <source-file src="src/ios/VideoPlayer/YSPBVideoPlayerView.m"/>
-        <source-file src="src/ios/VideoPlayer/YSPBVideoPlayerViewData.m"/>
-        <source-file src="src/ios/VideoPlayer/YSPhotoBrowserProgressView.m"/>
-        <source-file src="src/ios/VideoPlayer/YSPhotoBrowserTipView.m"/>
-        <source-file src="src/ios/VideoPlayer/YSPBVideoPlayManager.m"/>
-        <source-file src="src/ios/videoplayer.m"/>
-
-
-        <resource-file src="src/ios/VideoPlayer/Resource/ybib_bigPlay@2x.png"/>
-        <resource-file src="src/ios/VideoPlayer/Resource/ybib_bigPlay@3x.png"/>
-        <resource-file src="src/ios/VideoPlayer/Resource/ybib_cancel@2x.png"/>
-        <resource-file src="src/ios/VideoPlayer/Resource/ybib_cancel@3x.png"/>
-        <resource-file src="src/ios/VideoPlayer/Resource/ybib_circlePoint@2x.png"/>
-        <resource-file src="src/ios/VideoPlayer/Resource/ybib_circlePoint@3x.png"/>
-        <resource-file src="src/ios/VideoPlayer/Resource/ybib_more@2x.png"/>
-        <resource-file src="src/ios/VideoPlayer/Resource/ybib_more@3x.png"/>
-        <resource-file src="src/ios/VideoPlayer/Resource/ybib_pause@2x.png"/>
-        <resource-file src="src/ios/VideoPlayer/Resource/ybib_pause@3x.png"/>
-        <resource-file src="src/ios/VideoPlayer/Resource/ybib_play@2x.png"/>
-        <resource-file src="src/ios/VideoPlayer/Resource/ybib_play@3x.png"/>
-        <resource-file src="src/ios/VideoPlayer/Resource/ybib_pround@2x.png"/>
-        <resource-file src="src/ios/VideoPlayer/Resource/ybib_pround@3x.png"/>
-        <resource-file src="src/ios/VideoPlayer/Resource/ybib_save@2x.png"/>
-        <resource-file src="src/ios/VideoPlayer/Resource/ybib_save@3x.png"/>
+        <!-- <resource-file src="src/ios/VideoPlayer/Resource/ybib_save@3x.png"/> -->
     </platform>
 
     
