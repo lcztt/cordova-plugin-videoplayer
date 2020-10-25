@@ -82,7 +82,6 @@
     self.startPlay = NO;
     [vc.view insertSubview:player belowSubview:vc.webView];
     vc.webView.opaque = false;
-    vc.webView.alpha = 0;
     
     self.videoPlayer.alpha = 0;
     [UIView animateWithDuration:0.25 animations:^{
