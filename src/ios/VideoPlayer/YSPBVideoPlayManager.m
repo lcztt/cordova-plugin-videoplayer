@@ -14,7 +14,7 @@
 @interface YSPBVideoPlayManager () <LCAVPlayerDelegate>
 
 @property (nonatomic, strong) CDVInvokedUrlCommand *command;
-@property (nonatomic, strong) LCAVPlayer *videoPlayer;
+@property (nonatomic, weak) LCAVPlayer *videoPlayer;
 @property (nonatomic, assign) BOOL startPlay;
 
 @end
@@ -76,10 +76,11 @@
     }
     CGRect frame = [[UIScreen mainScreen] bounds];
 //    frame.origin.y = frame.size.height;
-    self.videoPlayer = [[LCAVPlayer alloc] initWithFrame:frame];
+    LCAVPlayer *player = [[LCAVPlayer alloc] initWithFrame:frame];
+    self.videoPlayer = player;
     self.videoPlayer.delegate = self;
     self.startPlay = NO;
-    [vc.view insertSubview:self.videoPlayer belowSubview:vc.webView];
+    [vc.view insertSubview:player belowSubview:vc.webView];
     vc.webView.opaque = false;
     vc.webView.alpha = 0;
     
