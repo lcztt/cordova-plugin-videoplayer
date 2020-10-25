@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 @import AVFoundation;
+#import "LCAVPlayerManager.h"
 @class LCAVPlayer;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -24,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)playerDidPlaying:(LCAVPlayer *)playView progress:(NSTimeInterval)progress duration:(NSTimeInterval)duration;
 /// 播放结束
 - (void)playerDidPlayFinish:(LCAVPlayer *)playView;
+/// 播放状态更新
+- (void)playerDidUpdateState:(LCPlayerPlayState)state;
 
 @end
 

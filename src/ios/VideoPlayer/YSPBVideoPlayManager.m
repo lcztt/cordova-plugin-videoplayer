@@ -11,10 +11,11 @@
 #import "MainViewController.h"
 
 
-@interface YSPBVideoPlayManager ()
+@interface YSPBVideoPlayManager () <LCAVPlayerDelegate>
 
 @property (nonatomic, strong) CDVInvokedUrlCommand *command;
 @property (nonatomic, strong) LCAVPlayer *videoPlayer;
+@property (nonatomic, assign) BOOL startPlay;
 
 @end
 
@@ -53,7 +54,7 @@
     BOOL isLoop = [params[@"isLoop"] boolValue];
     BOOL isStart = [params[@"isStart"] boolValue];
     
-    UIViewController *vc = (MainViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    MainViewController *vc = (MainViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
     if ([vc isKindOfClass:[UINavigationController class]]) {
         vc = [[(UINavigationController *)vc viewControllers] lastObject];
     }
@@ -76,8 +77,11 @@
     CGRect frame = [[UIScreen mainScreen] bounds];
 //    frame.origin.y = frame.size.height;
     self.videoPlayer = [[LCAVPlayer alloc] initWithFrame:frame];
+    self.videoPlayer.delegate = self;
+    self.startPlay = NO;
     [vc.view insertSubview:self.videoPlayer belowSubview:vc.webView];
     vc.webView.opaque = false;
+    vc.webView.alpha = 0;
     
     self.videoPlayer.alpha = 0;
     [UIView animateWithDuration:0.25 animations:^{
@@ -213,6 +217,55 @@
         return json;
     }
     return nil;
+}
+
+#pragma mark - LCAVPlayerDelegate
+
+/// 展示视频封面
+- (void)playerDidShowVideoCover:(LCAVPlayer *)view
+{
+    
+}
+/// 视频加载成功，等待播放
+- (void)playerDidReadyToPlay:(LCAVPlayer *)playView
+{
+    NSLog(@"video download completion 1");
+    
+    NSDictionary *params = @{@"status":@(1)};
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                  messageAsDictionary:params];
+    pluginResult.keepCallback = @(1);
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
+}
+
+/// 视频加载失败
+- (void)playerDidLoadFail:(LCAVPlayer *)playView error:(nullable NSError *)error
+{
+    
+}
+
+/// 播放进度更新
+- (void)playerDidPlaying:(LCAVPlayer *)playView progress:(NSTimeInterval)progress duration:(NSTimeInterval)duration
+{
+    
+}
+
+/// 播放结束
+- (void)playerDidPlayFinish:(LCAVPlayer *)playView
+{
+    
+}
+
+- (void)playerDidUpdateState:(LCPlayerPlayState)state
+{
+    if (LCPlayerPlayStatePlaying == state && !self.startPlay) {
+        self.startPlay = YES;
+        NSDictionary *params = @{@"status":@(2)};
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
+                                                      messageAsDictionary:params];
+        pluginResult.keepCallback = @(1);
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:self.command.callbackId];
+    }
 }
 
 @end

@@ -231,6 +231,10 @@
         } else if (playState == LCPlayerPlayStatePlaying) {
             weakSelf.playIcon.hidden = YES;
         }
+        
+        if ([weakSelf.delegate respondsToSelector:@selector(playerDidUpdateState:)]) {
+            [weakSelf.delegate playerDidUpdateState:playState];
+        }
     };
     
     self.playerManager.presentationSizeChanged = ^(LCAVPlayerManager * _Nonnull asset, CGSize size) {
