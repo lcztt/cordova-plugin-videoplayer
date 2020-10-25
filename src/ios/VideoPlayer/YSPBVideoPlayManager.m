@@ -53,7 +53,10 @@
     BOOL isLoop = [params[@"isLoop"] boolValue];
     BOOL isStart = [params[@"isStart"] boolValue];
     
-    MainViewController *vc = (MainViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    UIViewController *vc = (MainViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    if ([vc isKindOfClass:[UINavigationController class]]) {
+        vc = [[(UINavigationController *)vc viewControllers] lastObject];
+    }
     if (![vc isKindOfClass:[MainViewController class]]) {
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
