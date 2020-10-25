@@ -126,6 +126,9 @@
             self.videoPlayer = nil;
             
             MainViewController *vc = (MainViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+            if ([vc isKindOfClass:[UINavigationController class]]) {
+                vc = [[(UINavigationController *)vc viewControllers] lastObject];
+            }
             vc.webView.opaque = true;
             vc.webView.backgroundColor = self.backgroundColor;
             [self removeNotification];
