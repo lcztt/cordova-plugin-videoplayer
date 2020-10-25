@@ -16,6 +16,7 @@
 @property (nonatomic, strong) CDVInvokedUrlCommand *command;
 @property (nonatomic, weak) LCAVPlayer *videoPlayer;
 @property (nonatomic, assign) BOOL startPlay;
+@property (nonatomic, strong) UIColor *backgroundColor;
 
 @end
 
@@ -82,6 +83,8 @@
     self.startPlay = NO;
     [vc.view insertSubview:player belowSubview:vc.webView];
     vc.webView.opaque = false;
+    self.backgroundColor = vc.webView.backgroundColor;
+    vc.webView.backgroundColor = [UIColor clearColor];
     
     self.videoPlayer.alpha = 0;
     [UIView animateWithDuration:0.25 animations:^{
@@ -124,6 +127,7 @@
             
             MainViewController *vc = (MainViewController *)[UIApplication sharedApplication].keyWindow.rootViewController;
             vc.webView.opaque = true;
+            vc.webView.backgroundColor = self.backgroundColor;
             [self removeNotification];
         }];
     }
